@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 const PROJECTS = [
   {
@@ -7,8 +8,10 @@ const PROJECTS = [
     title: "Kaushik Sampath",
     client: "India Codes",
     clientType: "Freelancer & Blogger",
+    logo: "/assets/indiacodes_logo.png",
+    image: "/assets/kaushiksampath.jpg",
     tags: ["Freelancer & Blogger", "India Codes", "PIN & IFSC Directory"],
-    desc: "A fast, responsive web platform and blog for Kaushik Sampath, an independent creator and tech blogger. Powers India Codes with search tools for India\u2019s Postal/PIN codes, banking IFSC and SWIFT codes, STD/ISD directories, and developer articles.",
+    desc: "A fast, responsive web platform and blog for Kaushik Sampath, an independent creator and tech blogger. Powers India Codes with search tools for India’s Postal/PIN codes, banking IFSC and SWIFT codes, STD/ISD directories, and developer articles.",
     link: "https://indiacodes.co.in/",
     tech: ["Next.js", "Search Directory", "Tech Blog", "REST APIs"],
     flip: false,
@@ -16,10 +19,12 @@ const PROJECTS = [
   {
     id: 2,
     title: "Jahan Polymers",
-    client: "JP JumboLite\u00ae",
+    client: "JP JumboLite®",
     clientType: "Polymers Company",
-    tags: ["Polymers Company", "JP JumboLite\u00ae", "Industrial B2B"],
-    desc: "A modern B2B platform engineered for Jahan Polymers Private Limited, India\u2019s leading polymers company and manufacturer of JP JumboLite\u00ae polycarbonate compact sheets. Features comprehensive product catalogs and automated quote request systems.",
+    logo: "/assets/jahan_logo.jpg",
+    image: "/assets/jahanpolymers.jpg",
+    tags: ["Polymers Company", "JP JumboLite®", "Industrial B2B"],
+    desc: "A modern B2B platform engineered for Jahan Polymers Private Limited, India’s leading polymers company and manufacturer of JP JumboLite® polycarbonate compact sheets. Features comprehensive product catalogs and automated quote request systems.",
     link: "https://jumbolite.co.in/",
     tech: ["Next.js", "Product Catalog", "Instant RFQ", "Responsive UI"],
     flip: true,
@@ -29,6 +34,8 @@ const PROJECTS = [
     title: "Tree India Exports",
     client: "Tree India Exports",
     clientType: "Global Confectionery Exporter",
+    logo: "/assets/treeindia_logo.png",
+    image: "/assets/treeindia.jpg",
     tags: ["Global Exporter", "Confectionery & Snacks", "15+ Countries"],
     desc: "A vibrant, international export platform built for Tree India, delivering premium Indian confectionery, candies, lollipops, biscuits, and chocolates across 15+ countries worldwide. Equipped with dynamic showcases and global compliance badges.",
     link: "https://www.treeindiaexports.com/",
@@ -41,25 +48,31 @@ const TESTIMONIALS = [
   {
     quote: "AJ Studio transformed my digital presence and engineered an exceptional platform for India Codes. Fast, reliable search tools and clean modern aesthetics.",
     name: "Kaushik Sampath",
-    role: "Freelancer & Blogger \u2022 India Codes",
+    role: "Freelancer & Blogger • India Codes",
+    avatar: "/assets/avatar1.png",
+    isLogo: false,
   },
   {
     quote: "We needed a serious digital upgrade for our manufacturing business. The UI/UX overhaul and the new catalog flow they built has completely modernized Jahan Polymers.",
     name: "Management Team",
-    role: "Jahan Polymers (JP JumboLite\u00ae)",
+    role: "Jahan Polymers (JP JumboLite®)",
+    avatar: "/assets/jahan_logo.jpg",
+    isLogo: true,
   },
   {
     quote: "Our global snack and confectionery export platform has expanded our international reach to over 15 countries. Outstanding design quality and responsiveness.",
     name: "Export Division",
     role: "Tree India Exports",
+    avatar: "/assets/treeindia_logo.png",
+    isLogo: true,
   },
 ];
 
 const SERVICES = [
-  { icon: "\ud83d\udda5\ufe0f", title: "Web Design", desc: "Performant, SEO-optimized, and visually stunning websites that convert." },
-  { icon: "\u26a1", title: "App Development", desc: "Dynamic web applications built with modern engineering and Next.js." },
-  { icon: "\ud83c\udfa8", title: "UI/UX Design", desc: "Intuitive user journeys mapped using Figma and industry-leading systems." },
-  { icon: "\ud83d\udcf1", title: "Social & Video", desc: "Scroll-stopping designs and video edits that elevate your brand presence." },
+  { icon: "🖥️", title: "Web Design", desc: "Performant, SEO-optimized, and visually stunning websites that convert." },
+  { icon: "⚡", title: "App Development", desc: "Dynamic web applications built with modern engineering and Next.js." },
+  { icon: "🎨", title: "UI/UX Design", desc: "Intuitive user journeys mapped using Figma and industry-leading systems." },
+  { icon: "📱", title: "Social & Video", desc: "Scroll-stopping designs and video edits that elevate your brand presence." },
 ];
 
 const PROCESS = [
@@ -69,10 +82,13 @@ const PROCESS = [
   { num: "04", title: "Launch", desc: "Testing rigorously, deploying, and providing ongoing growth support." },
 ];
 
-const MARQUEE_ITEMS = [
-  "Kaushik Sampath", "Jahan Polymers", "Tree India Exports",
-  "Kaushik Sampath", "Jahan Polymers", "Tree India Exports",
-  "Kaushik Sampath", "Jahan Polymers", "Tree India Exports",
+const MARQUEE_CLIENTS = [
+  { name: "Kaushik Sampath", logo: "/assets/indiacodes_logo.png" },
+  { name: "Jahan Polymers", logo: "/assets/jahan_logo.jpg" },
+  { name: "Tree India Exports", logo: "/assets/treeindia_logo.png" },
+  { name: "Kaushik Sampath", logo: "/assets/indiacodes_logo.png" },
+  { name: "Jahan Polymers", logo: "/assets/jahan_logo.jpg" },
+  { name: "Tree India Exports", logo: "/assets/treeindia_logo.png" },
 ];
 
 export default function Home() {
@@ -82,7 +98,7 @@ export default function Home() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => setScrolled(window.scrollY > 30);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -110,20 +126,50 @@ export default function Home() {
   return (
     <>
       {/* NAVBAR */}
-      <nav className="navbar" style={{ boxShadow: scrolled ? "0 4px 32px rgba(0,0,0,0.4)" : "none" }}>
+      <nav className={`navbar${scrolled ? " scrolled" : ""}`} id="navbar">
         <div className="container nav-content">
-          <a href="#home" className="logo">AJ Studio<span className="dot">.</span></a>
+          <a href="#home" className="logo">
+            AJ Studio<span className="dot">.</span>
+          </a>
+          
           <ul className={`nav-links${menuOpen ? " open" : ""}`}>
-            {["about","services","portfolio","process","contact"].map(s => (
-              <li key={s}><a href={`#${s}`} onClick={() => setMenuOpen(false)} style={{textTransform:"capitalize"}}>{s === "portfolio" ? "Work" : s.charAt(0).toUpperCase()+s.slice(1)}</a></li>
+            {["about", "services", "portfolio", "process", "contact"].map((s) => (
+              <li key={s}>
+                <a
+                  href={`#${s}`}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {s === "portfolio" ? "Work" : s.charAt(0).toUpperCase() + s.slice(1)}
+                </a>
+              </li>
             ))}
+            {menuOpen && (
+              <li className="mobile-cta-item">
+                <a
+                  href="#contact"
+                  className="btn btn-primary w-full"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Start a Project
+                </a>
+              </li>
+            )}
           </ul>
-          <a href="#contact" className="btn btn-primary sm-hide">Start a Project</a>
-          <button className="mobile-menu-btn" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
-            <span style={{ transform: menuOpen ? "rotate(45deg) translate(5px,5px)" : "none" }} />
-            <span style={{ opacity: menuOpen ? 0 : 1 }} />
-            <span style={{ transform: menuOpen ? "rotate(-45deg) translate(5px,-5px)" : "none" }} />
-          </button>
+
+          <div className="nav-actions">
+            <a href="#contact" className="btn btn-primary sm-hide">
+              Start a Project
+            </a>
+            <button
+              className={`mobile-menu-btn${menuOpen ? " active" : ""}`}
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Toggle Navigation Menu"
+            >
+              <span />
+              <span />
+              <span />
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -131,7 +177,7 @@ export default function Home() {
         {/* HERO */}
         <section className="hero" id="home">
           <div className="container hero-grid">
-            <div>
+            <div className="hero-content">
               <div className="pill-badge">
                 <span className="pulse" /> Premium Digital Agency
               </div>
@@ -148,29 +194,46 @@ export default function Home() {
                 <a href="#contact" className="btn btn-secondary">Start a Project</a>
               </div>
             </div>
+
             <div className="hero-visual fade-in fade-in-delay-4">
-              <div className="hero-card">
-                <div className="hero-card-badge"><span className="pulse" />Currently Available</div>
-                <h3>Crafting Digital Excellence</h3>
-                <p>End-to-end solutions from design to deployment for ambitious brands.</p>
-                <div className="hero-tags">
-                  <span className="hero-tag">UI/UX Design</span>
-                  <span className="hero-tag">Web Apps</span>
-                  <span className="hero-tag">Content</span>
-                  <span className="hero-tag">Next.js</span>
+              <div className="hero-visual-card">
+                <div className="hero-img-container">
+                  <img
+                    src="/assets/hero.png"
+                    alt="AJ Studio Digital Abstract Art"
+                    className="hero-main-img"
+                  />
+                  <div className="hero-img-overlay" />
                 </div>
-                <div className="mini-stat-row">
-                  <div className="mini-stat">
-                    <div className="num">50+</div>
-                    <div className="lbl">Projects</div>
+                
+                {/* Floating Badges */}
+                <div className="floating-badge badge-top-right">
+                  <span>✨</span> UI/UX Design
+                </div>
+                <div className="floating-badge badge-mid-left">
+                  <span>⚡</span> Web Apps
+                </div>
+                <div className="floating-badge badge-bottom-right">
+                  <span>📱</span> Content & Branding
+                </div>
+
+                <div className="hero-card-footer">
+                  <div className="status-pill">
+                    <span className="pulse" /> Available for New Projects
                   </div>
-                  <div className="mini-stat">
-                    <div className="num">100%</div>
-                    <div className="lbl">Satisfaction</div>
-                  </div>
-                  <div className="mini-stat">
-                    <div className="num">3+</div>
-                    <div className="lbl">Years</div>
+                  <div className="mini-stats">
+                    <div className="mini-stat">
+                      <span className="num">50+</span>
+                      <span className="lbl">Projects</span>
+                    </div>
+                    <div className="mini-stat">
+                      <span className="num">100%</span>
+                      <span className="lbl">Satisfaction</span>
+                    </div>
+                    <div className="mini-stat">
+                      <span className="num">3+</span>
+                      <span className="lbl">Years</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -181,11 +244,16 @@ export default function Home() {
         {/* MARQUEE */}
         <div className="marquee-section">
           <div className="marquee-track">
-            {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
-              <span key={i} className="marquee-item">
-                {i % 3 === 0 ? "\u2726" : i % 3 === 1 ? "\u25c6" : "\u2728"} &nbsp;{item}&nbsp;
-                <span className="marquee-star">\u2726</span>
-              </span>
+            {[...MARQUEE_CLIENTS, ...MARQUEE_CLIENTS].map((client, i) => (
+              <div key={i} className="marquee-item">
+                <img
+                  src={client.logo}
+                  alt={client.name}
+                  className="marquee-logo"
+                />
+                <span className="marquee-name">{client.name}</span>
+                <span className="marquee-star">✧</span>
+              </div>
             ))}
           </div>
         </div>
@@ -197,20 +265,20 @@ export default function Home() {
               <span className="section-label">About</span>
               <h2 className="section-title">Crafting digital<br />excellence.</h2>
               <p>AJ Studio is run by a passionate UI/UX designer and developer dedicated to helping brands thrive in the modern landscape.</p>
-              <p>We believe that a strong digital presence is no longer optional. By combining minimal aesthetics with robust engineering, we create products that drive real results.</p>
+              <p>We believe that a strong digital presence is no longer optional. By combining minimal aesthetics with robust engineering, we create products that drive real results. From scalable web platforms to brand identities, we handle the complexity so you can focus on growth.</p>
               <div className="stats-row">
-                <div className="stat"><div className="num">50+</div><div className="lbl">Projects</div></div>
-                <div className="stat"><div className="num">100%</div><div className="lbl">Satisfaction</div></div>
-                <div className="stat"><div className="num">3+</div><div className="lbl">Years</div></div>
+                <div className="stat"><div className="num">50+</div><div className="lbl">Projects Delivered</div></div>
+                <div className="stat"><div className="num">100%</div><div className="lbl">Satisfaction Rate</div></div>
+                <div className="stat"><div className="num">3+</div><div className="lbl">Years of Excellence</div></div>
               </div>
             </div>
             <div className="expertise-glass">
               <h3>Core Expertise</h3>
               <ul className="expertise-list">
                 {[
-                  { icon: "\u2728", title: "UI/UX Design", desc: "Premium, user-centered interfaces." },
-                  { icon: "\ud83d\udcbb", title: "Development", desc: "High-performance web applications." },
-                  { icon: "\ud83d\udcf1", title: "Content Creation", desc: "Dynamic video & social media graphics." },
+                  { icon: "✨", title: "UI/UX Design", desc: "Premium, user-centered interfaces with Figma prototyping." },
+                  { icon: "💻", title: "Modern Web Development", desc: "High-performance websites and full-stack web applications." },
+                  { icon: "📱", title: "Content Creation", desc: "Dynamic video editing, motion graphics, and social content." },
                 ].map(e => (
                   <li key={e.title} className="expertise-item">
                     <div className="exp-icon">{e.icon}</div>
@@ -231,23 +299,35 @@ export default function Home() {
               <p className="section-sub">A glimpse into recently launched products for our trusted partners.</p>
             </div>
             <div className="portfolio-grid">
-              {PROJECTS.map(p => (
+              {PROJECTS.map((p) => (
                 <div key={p.id} className={`project-card${p.flip ? " flip" : ""}`}>
                   <div className="project-img-wrap">
-                    <div style={{ width:"100%", height:"100%", background:"linear-gradient(135deg, #1a1a24 0%, #111118 100%)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:"3rem" }}>
-                      {p.id === 1 ? "\ud83c\udf10" : p.id === 2 ? "\ud83c\udfed" : "\ud83c\udf0d"}
-                    </div>
+                    <img
+                      src={p.image}
+                      alt={`${p.title} - ${p.client}`}
+                      className="project-img"
+                    />
                     <div className="project-overlay">
-                      <a href={p.link} target="_blank" rel="noopener noreferrer" className="view-btn">Visit Website \u2197</a>
+                      <a href={p.link} target="_blank" rel="noopener noreferrer" className="view-btn">
+                        Visit Live Website ↗
+                      </a>
                     </div>
                   </div>
                   <div className="project-info">
+                    <div className="project-client-badge">
+                      <img src={p.logo} alt={`${p.client} Logo`} className="project-client-logo" />
+                      <span className="project-client-type">{p.clientType}</span>
+                    </div>
                     <div className="project-tags">
                       {p.tags.map(t => <span key={t} className="project-tag">{t}</span>)}
                     </div>
                     <h3>{p.title}</h3>
                     <p>{p.desc}</p>
-                    <a href={p.link} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">Explore Live Website \u2197</a>
+                    <div className="project-actions">
+                      <a href={p.link} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">
+                        Explore Live Website ↗
+                      </a>
+                    </div>
                     <div className="tech-stack">
                       {p.tech.map(t => <span key={t} className="tech-tag">{t}</span>)}
                     </div>
@@ -305,13 +385,20 @@ export default function Home() {
               <h2 className="section-title">Client Love</h2>
             </div>
             <div className="testi-grid">
-              {TESTIMONIALS.map(t => (
+              {TESTIMONIALS.map((t) => (
                 <div key={t.name} className="testi-card">
                   <div className="quote">&ldquo;</div>
                   <p className="testi-text">{t.quote}</p>
                   <div className="client-info">
-                    <div style={{ width:44,height:44,borderRadius:"50%",background:"var(--surface-2)",border:"1px solid var(--border)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"1.1rem",flexShrink:0 }}>\ud83d\udc64</div>
-                    <div><h4>{t.name}</h4><span>{t.role}</span></div>
+                    {t.isLogo ? (
+                      <img src={t.avatar} alt={t.name} className="client-avatar-logo" />
+                    ) : (
+                      <img src={t.avatar} alt={t.name} className="client-avatar-img" />
+                    )}
+                    <div>
+                      <h4>{t.name}</h4>
+                      <span>{t.role}</span>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -327,18 +414,18 @@ export default function Home() {
               <h2>Let&apos;s build something<br /><span className="gradient-text">extraordinary.</span></h2>
               <p>Ready to elevate your digital presence? Reach out, and let&apos;s discuss your next big idea.</p>
               <div className="contact-detail">
-                <span>\u2709\ufe0f</span>
+                <span>✉️</span>
                 <a href="mailto:hello@ajstudio.dev">hello@ajstudio.dev</a>
               </div>
               <div className="contact-detail">
-                <span>\ud83d\udccd</span>
+                <span>📍</span>
                 <span>Available Worldwide</span>
               </div>
             </div>
             <div className="form-glass">
               {formState === "success" ? (
                 <div className="form-success">
-                  <div style={{fontSize:"2.5rem",marginBottom:"1rem"}}>\u2705</div>
+                  <div style={{fontSize:"2.5rem",marginBottom:"1rem"}}>✅</div>
                   <p>Message sent! We&apos;ll get back to you soon.</p>
                 </div>
               ) : (
