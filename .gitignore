@@ -1,0 +1,18 @@
+﻿# Dependencies
+node_modules/
+aj-studio-nextjs/node_modules/
+
+# Environment variables (keep secrets safe)
+.env.local
+aj-studio-nextjs/.env.local
+*.env.local
+
+# Next.js build output
+.next/
+aj-studio-nextjs/.next/
+aj-studio-nextjs/out/
+
+# System files
+.DS_Store
+Thumbs.db
+desktop.ini
