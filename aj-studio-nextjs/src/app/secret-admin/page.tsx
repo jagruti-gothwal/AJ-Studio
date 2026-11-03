@@ -1,8 +1,8 @@
-﻿"use client";
+"use client";
 import { useState, useEffect, useCallback } from "react";
 
 type Project = { id: string; title: string; client: string; client_type: string; description: string; link: string; tags: string; tech: string; };
-type Contact = { id: string; name: string; email: string; interest: string; message: string; created_at: string; };
+type Contact = { id: string; name: string; email: string; phone?: string; interest: string; message: string; created_at: string; };
 
 const ADMIN_STYLES = `
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -279,8 +279,9 @@ export default function AdminPage() {
                     <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:"1rem" }}>
                       <div>
                         <h3 style={{ fontFamily:"Outfit,sans-serif", fontSize:"1rem", fontWeight:700 }}>{c.name}</h3>
-                        <div style={{ display:"flex", gap:"1rem", marginTop:"0.3rem", flexWrap:"wrap" }}>
+                        <div style={{ display:"flex", gap:"1rem", marginTop:"0.3rem", flexWrap:"wrap", alignItems:"center" }}>
                           <a href={`mailto:${c.email}`} style={{ fontSize:"0.85rem", color:"#6c63ff" }}>{c.email}</a>
+                          {c.phone && <a href={`tel:${c.phone}`} style={{ fontSize:"0.85rem", color:"#10e8a8" }}>📞 {c.phone}</a>}
                           {c.interest && <span style={{ fontSize:"0.8rem", background:"rgba(108,99,255,0.1)", border:"1px solid rgba(108,99,255,0.2)", color:"#a855f7", padding:"0.2rem 0.7rem", borderRadius:50 }}>{c.interest}</span>}
                         </div>
                       </div>

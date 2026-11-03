@@ -200,7 +200,7 @@ const TRACKS = [
 ];
 
 export default function Home() {
-  const [formData, setFormData] = useState({ name: "", email: "", interest: "", message: "" });
+  const [formData, setFormData] = useState({ name: "", email: "", phone: "", interest: "", message: "" });
   const [formState, setFormState] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
@@ -251,7 +251,7 @@ export default function Home() {
       });
       if (res.ok) {
         setFormState("success");
-        setFormData({ name: "", email: "", interest: "", message: "" });
+        setFormData({ name: "", email: "", phone: "", interest: "", message: "" });
       } else {
         setFormState("error");
       }
@@ -880,6 +880,19 @@ export default function Home() {
                         className="form-input"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        required
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="phone">Phone / WhatsApp Number</label>
+                      <input
+                        id="phone"
+                        type="tel"
+                        placeholder="+91 63781 51265"
+                        className="form-input"
+                        value={formData.phone}
+                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         required
                       />
                     </div>
