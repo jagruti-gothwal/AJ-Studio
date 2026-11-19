@@ -1,244 +1,352 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
+import Image from "next/image";
 
-const SERVICES = [
+// Solutions data matching Design Asylum structure
+const SOLUTIONS = [
   {
     num: "01",
-    title: "UI/UX Design",
-    desc: "Intuitive, engaging digital interfaces that improve usability and turn complex product workflows into seamless user journeys.",
-    items: [
-      "Website UI/UX Design",
-      "Mobile Application Design",
-      "SaaS & Dashboard Design",
-      "CRM & ERP Interface Design",
-      "Wireframing & Prototyping",
-      "Design Systems",
+    icon: "📱",
+    title: "Web and Mobile Apps",
+    desc: "From zero-to-one product interfaces to high-performance Next.js web applications and mobile apps engineered for speed, engagement, and conversion.",
+    features: [
+      "Custom Next.js & React Web Platforms",
+      "Mobile App UI/UX (iOS & Android)",
+      "High-Converting Landing Pages",
+      "Performance & Core Web Vitals (<1s)",
+      "Responsive Cross-Device Architecture",
     ],
+    tags: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
   },
   {
     num: "02",
-    title: "Website Design & Development",
-    desc: "Modern, ultra-fast websites built with Next.js and clean code that communicate your brand and convert visitors into customers.",
-    items: [
-      "Business Websites",
-      "Portfolio Websites",
-      "Landing Pages & Funnels",
-      "Website Redesign",
-      "Responsive Frontend (Next.js)",
-      "Website Speed & SEO Optimization",
+    icon: "☁️",
+    title: "Cloud Enterprise Software",
+    desc: "Intuitive digital interfaces for complex business operations. We turn dense enterprise workflows into clear, frictionless dashboards and portals.",
+    features: [
+      "SaaS Multi-Tenant Dashboards",
+      "CRM & ERP Custom Interfaces",
+      "Data Visualization & BI Reporting",
+      "Role-Based Access Management",
+      "API Gateways & Webhooks",
     ],
+    tags: ["Enterprise SaaS", "Dashboards", "REST APIs", "SQL"],
   },
   {
     num: "03",
-    title: "Business Solutions",
-    desc: "Optimize and automate your operational workflows through custom CRM configurations, data dashboards, and third-party integrations.",
-    items: [
-      "CRM Customization",
-      "Zoho CRM Workflows",
-      "Dashboards & Reporting",
-      "Process Automation",
-      "Business Application Interfaces",
-      "Third-Party Integrations",
+    icon: "⚡",
+    title: "Business Process & CRM Automation",
+    desc: "Supercharge your operational velocity. We implement and customize Zoho CRM, build automated lead pipelines, and eliminate manual busywork.",
+    features: [
+      "Zoho CRM Setup & Custom Deluge Scripts",
+      "Automated Invoicing & Lead Routing",
+      "Third-Party Webhook Integrations",
+      "Pipeline Tracking & Real-Time Alerts",
+      "Zero-Manual Data Entry Workflows",
     ],
+    tags: ["Zoho CRM", "Automation", "Workflows", "Webhooks"],
   },
   {
     num: "04",
-    title: "Branding & Creative Design",
-    desc: "Cohesive visual identities and scroll-stopping digital brand assets tailored to give your business an authoritative presence.",
-    items: [
-      "Logo Design",
-      "Brand Identity & Style Guides",
-      "Social Media Creatives",
-      "Marketing Graphics",
-      "Presentation Design",
-      "Digital Brand Assets",
+    icon: "🎨",
+    title: "Branding and Identity",
+    desc: "Comprehensive visual identity systems that give scaling companies an authoritative, memorable presence in crowded global markets.",
+    features: [
+      "Strategic Brand Positioning",
+      "Logo Systems & Visual Guidelines",
+      "Figma Design Systems & Tokens",
+      "Pitch Decks & Presentation Kits",
+      "Digital Marketing & Social Creatives",
     ],
+    tags: ["Brand Strategy", "Logo Design", "Design Systems"],
+  },
+  {
+    num: "05",
+    icon: "🤖",
+    title: "AI Integration & Adoption",
+    desc: "Practical, high-utility AI features integrated directly into your web products — from intelligent search engines to automated data summarization.",
+    features: [
+      "LLM Prompt Pipelines & Chat Assistants",
+      "Semantic & Hybrid Search Architecture",
+      "Automated Document Summaries",
+      "AI-Assisted Workflow Triggers",
+      "Actionable Insights Generation",
+    ],
+    tags: ["AI Integrations", "Semantic Search", "LLMs"],
+  },
+  {
+    num: "06",
+    icon: "📈",
+    title: "Performance & Technical SEO",
+    desc: "Engineering foundations that search engines love. Clean schema markup, instant server-rendered pages, and conversion-optimized architectures.",
+    features: [
+      "Core Web Vitals Perfection (99+ PageSpeed)",
+      "Structured Data & JSON-LD Schemas",
+      "Dynamic XML Sitemaps & Indexing",
+      "Conversion Funnel Instrumentation",
+      "Technical SEO Auditing & Remediation",
+    ],
+    tags: ["Technical SEO", "Speed", "Schema Markup"],
   },
 ];
 
-const PROJECTS = [
+// Featured Portfolio & Case Studies
+const CASE_STUDIES = [
   {
     id: 1,
     num: "01",
-    title: "Kaushik Sampath",
-    client: "India Codes",
-    clientType: "Search Directory & Tech Blog",
-    logo: "/assets/indiacodes_logo.png",
+    client: "Kaushik Sampath | India Codes",
+    category: "Web and Mobile Apps",
+    filterCat: "apps",
+    scope: ["Research", "UI/UX Design", "Next.js Engineering", "Search Architecture"],
+    headline: "High-speed directory & search engine indexing 50,000+ postal and banking codes.",
+    narrative:
+      "Engineered an ultra-fast searchable web directory for Kaushik Sampath powering India Codes. Features instant lookup across India's PIN codes, IFSC and SWIFT banking codes, and an editorial publication hub for engineering insights.",
+    impactMetric: "350k+ Monthly Search Queries · <120ms Query Latency · 99.9% Uptime",
     image: "/assets/project_kaushik.jpg",
-    tags: ["UI/UX Design", "Web Development", "PIN & IFSC Search"],
-    desc: "A fast, responsive web platform and blog for Kaushik Sampath, powering India Codes with search tools for India's Postal/PIN codes, banking IFSC and SWIFT codes, STD/ISD directories, and developer articles.",
+    logo: "/assets/indiacodes_logo.png",
     link: "https://indiacodes.co.in/",
     tech: ["Next.js", "Directory Engine", "REST APIs", "SEO Architecture"],
+    challenges:
+      "Handling thousands of concurrent queries across large postal datasets without lag, and structuring SEO for 50,000+ distinct pages.",
+    solution:
+      "Server-side caching with Next.js route handlers, pre-computed search indices, and dynamic metadata generation for flawless organic ranking.",
   },
   {
     id: 2,
     num: "02",
-    title: "Jahan Polymers",
-    client: "JP JumboLite®",
-    clientType: "Polymers Manufacturer",
-    logo: "/assets/jahan_logo.jpg",
+    client: "Jahan Polymers | JP JumboLite®",
+    category: "Cloud Enterprise Software",
+    filterCat: "cloud",
+    scope: ["Brand Identity", "B2B Product Catalog", "Instant RFQ Engine", "Responsive UI"],
+    headline: "Comprehensive B2B digital catalog and quotation engine for India's leading polymers brand.",
+    narrative:
+      "Re-engineered the digital presence of Jahan Polymers Private Limited, manufacturers of JP JumboLite® polycarbonate compact sheets. Upgraded from static brochures to a dynamic digital catalog with direct technical specification sheets and automated quote dispatches.",
+    impactMetric: "+220% International RFQs · 100% Mobile Ready · 4.8/5 Usability Score",
     image: "/assets/project_jahan.jpg",
-    tags: ["Industrial B2B", "Product Catalog", "Instant RFQ"],
-    desc: "A modern B2B platform engineered for Jahan Polymers Private Limited, India's leading polymers company and manufacturer of JP JumboLite® polycarbonate compact sheets. Features digital catalogs and automated quote request flows.",
+    logo: "/assets/jahan_logo.jpg",
     link: "https://jumbolite.co.in/",
-    tech: ["Next.js", "B2B Catalog", "Quote Automation", "Responsive UI"],
+    tech: ["Next.js", "B2B Catalog", "Quote Automation", "Mobile Optimization"],
+    challenges:
+      "Showcasing highly technical polymer specifications and certificates in an accessible layout for global industrial procurement managers.",
+    solution:
+      "Structured product spec tables, downloadable technical sheets, and a frictionless 2-click quote request pipeline directly connected to sales.",
   },
   {
     id: 3,
     num: "03",
-    title: "Tree India Exports",
     client: "Tree India Exports",
-    clientType: "Global Confectionery Exporter",
-    logo: "/assets/treeindia_logo.png",
+    category: "Web and Mobile Apps",
+    filterCat: "apps",
+    scope: ["UI/UX Design", "Global Trade Desk", "FMCG Showcase", "Cross-Border UX"],
+    headline: "Global confectionery export platform showcasing FMCG goods across 15+ countries.",
+    narrative:
+      "Built a modern export trading showcase for Tree India, delivering premium Indian confectionery, candies, lollipops, and biscuits worldwide. Features multi-regional packaging presentations, international compliance documentation, and multi-currency inquiry routing.",
+    impactMetric: "15+ Export Destinations · 4x Faster Lead Qualification · Global Reach",
     image: "/assets/project_treeindia.jpg",
-    tags: ["Global Exporter", "FMCG Showcase", "15+ Countries"],
-    desc: "A vibrant international export platform built for Tree India, delivering premium Indian confectionery, candies, lollipops, biscuits, and chocolates across 15+ countries worldwide with global compliance showcases.",
+    logo: "/assets/treeindia_logo.png",
     link: "https://www.treeindiaexports.com/",
     tech: ["Next.js", "Global Trade Desk", "FMCG Catalog", "Performance UI"],
+    challenges:
+      "Building confidence with international FMCG importers and managing large high-resolution confectionery catalogs on slow mobile networks.",
+    solution:
+      "Optimized Next.js image loading, compliance credential spotlights, and intuitive container-size estimation inquiry forms.",
+  },
+  {
+    id: 4,
+    num: "04",
+    client: "Pulse Enterprise Systems",
+    category: "Business Automation",
+    filterCat: "automation",
+    scope: ["Zoho CRM Architecture", "Custom Deluge Scripts", "BI Dashboards", "Webhooks"],
+    headline: "Zero-manual-entry sales operations pipeline and real-time executive dashboard.",
+    narrative:
+      "Architected an end-to-end business automation system inside Zoho CRM. Automated client onboarding, payment milestone notifications, proposal generation, and synchronized customer interactions into interactive executive dashboards.",
+    impactMetric: "18 Hours/Week Saved per Operator · 0 Missed Follow-ups · 100% Automated Invoicing",
+    image: "/assets/bento_digital_craft.jpg",
+    logo: "/assets/indiacodes_logo.png",
+    link: "https://indiacodes.co.in/",
+    tech: ["Zoho CRM", "Deluge Scripting", "Webhooks", "Analytics"],
+    challenges:
+      "Eliminating human error in multi-stage deal tracking and invoice generation across disparate sales teams.",
+    solution:
+      "Automated state machine workflows in Zoho CRM triggering milestone webhooks, payment alerts, and dynamic PDF quotes upon contract signature.",
+  },
+  {
+    id: 5,
+    num: "05",
+    client: "Apex Cloud Technologies",
+    category: "Cloud Enterprise Software",
+    filterCat: "cloud",
+    scope: ["SaaS Dashboard UI/UX", "Design System", "React & Next.js", "Analytics"],
+    headline: "High-density cloud analytics console with real-time KPI streaming and widget customization.",
+    narrative:
+      "Designed an expansive multi-tenant SaaS dashboard from ground up. Features customizable layout grids, sub-second query filters, role-based security matrices, and accessible dark/light themes tailored for high-frequency operators.",
+    impactMetric: "120+ Active Enterprise Workspaces · 4.9/5 Usability CSAT · Sub-Second Queries",
+    image: "/assets/portfolio1.png",
+    logo: "/assets/jahan_icon.jpg",
+    link: "https://jumbolite.co.in/",
+    tech: ["Next.js", "Tailwind CSS", "Data Visualizer", "Role RBAC"],
+    challenges:
+      "Presenting tens of thousands of data points without visual clutter or browser lag.",
+    solution:
+      "Virtual scroll lists, modular widget architecture, and a strict typography hierarchy built with a custom Figma design system.",
+  },
+  {
+    id: 6,
+    num: "06",
+    client: "Finova Wealth & Banking",
+    category: "Branding and Identity",
+    filterCat: "branding",
+    scope: ["Mobile App UI/UX", "Brand Guidelines", "Design Tokens", "Micro-Interactions"],
+    headline: "Next-generation fintech mobile interface and visual brand system for modern wealth management.",
+    narrative:
+      "Crafted an elegant brand identity and intuitive mobile app experience for a consumer wealth management platform. Features streamlined biometric authentication, visual portfolio allocations, and frictionless fund transfers.",
+    impactMetric: "40k+ Active Beta Users · 4.8 App Store Rating · 60% Faster Onboarding",
+    image: "/assets/portfolio2.png",
+    logo: "/assets/treeindia_icon.png",
+    link: "https://www.treeindiaexports.com/",
+    tech: ["Figma Systems", "Mobile UI", "Design Tokens", "Brand Strategy"],
+    challenges:
+      "Simplifying complex financial regulations and investment terminology into an approachable interface for Gen-Z and millennial investors.",
+    solution:
+      "Progressive disclosure UX patterns, contextual financial health indicators, and high-contrast micro-interactions.",
   },
 ];
 
+// Process Steps (Design Asylum Methodology)
 const PROCESS_STEPS = [
   {
     num: "01",
     title: "Discover",
-    desc: "We understand your business, goals, audience, and project requirements through an in-depth discovery session.",
+    desc: "We analyze your business model, target audience, technical constraints, and strategic growth targets through structured discovery sessions.",
   },
   {
     num: "02",
     title: "Plan",
-    desc: "We define the comprehensive project scope, timeline, deliverables, architecture, and technical approach.",
+    desc: "We define the comprehensive technical architecture, wireframes, user journeys, sprint milestones, and exact scope deliverables.",
   },
   {
     num: "03",
     title: "Design",
-    desc: "We create user journeys, wireframes, and high-fidelity interactive prototypes in Figma with pixel-perfect precision.",
+    desc: "We craft pixel-perfect UI, interactive prototypes in Figma, and reusable design systems engineered for accessibility and brand authority.",
   },
   {
     num: "04",
     title: "Develop",
-    desc: "We bring the approved designs to life using modern Next.js, clean scalable code, and performant web technologies.",
+    desc: "We bring designs into production-ready code using modern Next.js, clean TypeScript, scalable API endpoints, and clean CSS styling.",
   },
   {
     num: "05",
     title: "Deliver",
-    desc: "Rigorous quality testing, cross-device responsiveness check, and seamless production deployment.",
+    desc: "Rigorous cross-browser QA, mobile responsiveness verification, Core Web Vitals speed tuning, and smooth production deployment.",
   },
   {
     num: "06",
     title: "Support",
-    desc: "We provide agreed post-launch support, monitoring, and iterative improvements to support your business growth.",
+    desc: "Continuous post-launch monitoring, conversion optimization, iterative feature additions, and ongoing SLA maintenance.",
   },
 ];
 
-const WHY_US = [
+// Testimonials (Design Asylum style quote cards)
+const TESTIMONIALS = [
   {
-    icon: "💬",
-    title: "Direct Communication",
-    desc: "You talk directly with the specialist executing your project — no middle managers or lost requirements.",
+    quote:
+      "AJ Studio delivered end-to-end with extraordinary speed and precision. The directory platform handles hundreds of thousands of searches without breaking a sweat. Working directly with someone who understands both design and code made all the difference.",
+    name: "Kaushik Sampath",
+    role: "Founder, India Codes",
+    avatar: "/assets/avatar1.png",
+    stars: "★★★★★",
   },
   {
-    icon: "🎯",
-    title: "Thoughtful Design Decisions",
-    desc: "Every layout, button, and typography choice is purposefully crafted to solve specific business problems.",
+    quote:
+      "Our international B2B inquiries jumped dramatically within weeks of launching our new digital platform. The catalog makes it effortless for overseas procurement teams to review our specs and request quotes instantly.",
+    name: "Procurement & Operations",
+    role: "Jahan Polymers Private Limited",
+    avatar: "/assets/avatar2.png",
+    stars: "★★★★★",
   },
   {
-    icon: "⚡",
-    title: "Practical Development Approach",
-    desc: "We engineer with modern, dependable stacks like Next.js for blazing fast performance and search ranking.",
-  },
-  {
-    icon: "📋",
-    title: "Transparent Project Scope",
-    desc: "Clear timelines, defined milestones, and upfront scope so you always know what to expect.",
-  },
-  {
-    icon: "✨",
-    title: "Focus on Usability & Quality",
-    desc: "Aesthetic interfaces that are remarkably simple for real humans to navigate and use effortlessly.",
-  },
-  {
-    icon: "💼",
-    title: "Aligned with Business Goals",
-    desc: "Design + Development + Business Understanding: Solutions engineered to generate measurable business results.",
+    quote:
+      "The export desk presentation built by AJ Studio gave our FMCG products a world-class international presence across 15+ countries. Fast, reliable, and deeply committed to our business success.",
+    name: "Global Trade Desk",
+    role: "Tree India Exports",
+    avatar: "/assets/avatar3.jpg",
+    stars: "★★★★★",
   },
 ];
 
+// Insights & Articles (Design Asylum style)
+const INSIGHTS = [
+  {
+    cat: "Brand Strategy",
+    time: "5 min read",
+    title: "The Complete Brand Design Guide: From Logo Creation to Scalable Visual Systems",
+    desc: "Why scaling companies outgrow generic templates and how a cohesive design system drives valuation and customer trust.",
+  },
+  {
+    cat: "UX/UI Architecture",
+    time: "6 min read",
+    title: "UX Design Principles: A Practical Guide to Creating High-Converting User Experiences",
+    desc: "Key usability patterns, micro-interactions, and visual hierarchies that turn casual visitors into loyal paying customers.",
+  },
+  {
+    cat: "Engineering & Speed",
+    time: "4 min read",
+    title: "Shipping 70% Faster: Next.js & Modern Component-Driven Architecture in 2026",
+    desc: "How modern fullstack frameworks and pre-built design tokens compress product launch timelines from months to days.",
+  },
+];
+
+// Frequently Asked Questions (Matching Design Asylum)
 const FAQS = [
   {
-    q: "Is AJ Studio an agency or an independent studio?",
-    a: "AJ Studio is an independent digital design and development studio working directly with businesses, founders, and companies on high-impact digital projects.",
+    q: "Who are we?",
+    a: "AJ Studio is an independent digital design and technology studio based in India serving companies worldwide. We specialize in UI/UX design, full-stack Next.js web development, Zoho CRM business automation, and strategic branding.",
+  },
+  {
+    q: "What do we do?",
+    a: "We partner with ambitious startups, growing businesses, and enterprises to design and build high-performance web applications, SaaS dashboards, B2B catalogs, and automated business workflows that drive revenue.",
+  },
+  {
+    q: "How can you start working with AJ Studio?",
+    a: "Simply submit the inquiry form below or email us directly at ajstudio.projects@gmail.com with your project brief. We will review your goals, schedule a quick discovery call, and provide a clear milestone proposal within 24 business hours.",
+  },
+  {
+    q: "Who should work with us?",
+    a: "Founders, product leaders, and scaling companies who need high-velocity design and development without the red tape, slow layers, or high overhead of traditional bloated agencies.",
+  },
+  {
+    q: "How are we different?",
+    a: "We bridge strategic UI/UX design, production-grade Next.js code, and business automation under one roof. You work directly with experienced practitioners who understand business ROI, pipelines, and user conversion.",
   },
   {
     q: "Do you work with international clients?",
-    a: "Yes. Project inquiries from India and international markets across the globe are very welcome. All communication and project reviews are conducted smoothly via Google Meet, email, and WhatsApp.",
+    a: "Yes. We work seamlessly with clients across India, the Middle East, the US, and Europe. All sprint reviews, demos, and communications are held via Google Meet, email, and WhatsApp.",
   },
-  {
-    q: "Can I hire AJ Studio for a single project?",
-    a: "Yes. We work on fixed-scope individual projects (such as a website build, dashboard redesign, or brand identity) as well as ongoing advisory engagements.",
-  },
-  {
-    q: "Do you provide website redesign services?",
-    a: "Yes. We can modernize and rebuild your existing website through UI/UX overhaul, improved conversion architecture, faster load speeds, and modern Next.js engineering.",
-  },
-  {
-    q: "How do I start a project?",
-    a: "Simply reach out through the contact form or email us at ajstudio.projects@gmail.com with your project outline. We'll review your requirements, schedule a quick discovery call, and share a tailored proposal.",
-  },
-  {
-    q: "Do you provide maintenance and ongoing support?",
-    a: "Yes. Post-launch maintenance, feature enhancements, and ongoing updates can be agreed upon separately based on your product roadmap.",
-  },
-];
-
-const TRACKS = [
-  { title: "Midnight Dreams", artist: "Lofi Aesthetic", emoji: "🌙" },
-  { title: "Azure Horizon", artist: "Chill Synth", emoji: "☁️" },
-  { title: "Linear Waves", artist: "Modern Ambient", emoji: "🌊" },
-  { title: "Skyline Focus", artist: "Deep Chill", emoji: "✨" },
 ];
 
 export default function Home() {
-  const [formData, setFormData] = useState({ name: "", email: "", phone: "", interest: "", message: "" });
-  const [formState, setFormState] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [activeFilter, setActiveFilter] = useState("all");
+  const [selectedCase, setSelectedCase] = useState<(typeof CASE_STUDIES)[0] | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
-  // Music Player
-  const [musicOpen, setMusicOpen] = useState(false);
-  const [playing, setPlaying] = useState(false);
-  const [trackIdx, setTrackIdx] = useState(0);
-  const [progress, setProgress] = useState(0);
-  const progressRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  // Form State
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    interest: "UI/UX Design & Next.js Website",
+    message: "",
+  });
+  const [formState, setFormState] = useState<"idle" | "loading" | "success" | "error">("idle");
 
-  useEffect(() => {
-    if (playing) {
-      progressRef.current = setInterval(() => {
-        setProgress((p) => {
-          if (p >= 100) {
-            setTrackIdx((i) => (i + 1) % TRACKS.length);
-            return 0;
-          }
-          return p + 0.4;
-        });
-      }, 300);
-    } else {
-      if (progressRef.current) clearInterval(progressRef.current);
-    }
-    return () => {
-      if (progressRef.current) clearInterval(progressRef.current);
-    };
-  }, [playing]);
-
-  const nextTrack = () => {
-    setTrackIdx((i) => (i + 1) % TRACKS.length);
-    setProgress(0);
-  };
-  const prevTrack = () => {
-    setTrackIdx((i) => (i - 1 + TRACKS.length) % TRACKS.length);
-    setProgress(0);
-  };
+  const filteredProjects =
+    activeFilter === "all"
+      ? CASE_STUDIES
+      : CASE_STUDIES.filter((c) => c.filterCat === activeFilter);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -251,7 +359,13 @@ export default function Home() {
       });
       if (res.ok) {
         setFormState("success");
-        setFormData({ name: "", email: "", phone: "", interest: "", message: "" });
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          interest: "UI/UX Design & Next.js Website",
+          message: "",
+        });
       } else {
         setFormState("error");
       }
@@ -260,359 +374,414 @@ export default function Home() {
     }
   };
 
-  const currentTrack = TRACKS[trackIdx];
-
   return (
     <>
       {/* ====================================================================
-          HERO SECTION (Vibrant Sky Blue Card with Clouds & 3D Arc)
+          STICKY NAVBAR (Design Asylum Minimalist Style)
           ==================================================================== */}
-      <div className="hero-wrapper">
-        <header className="hero-card">
-          {/* Top Navbar */}
-          <nav className="hero-navbar" aria-label="Main Navigation">
-            <a href="#home" className="hero-brand">
-              <span className="hero-logo-icon">
-                {/* Stylized cloud-bridge logo mark */}
-                <svg width="26" height="20" viewBox="0 0 26 20" fill="currentColor">
-                  <path d="M2 18V9.5C2 5.91 4.91 3 8.5 3C10.53 3 12.33 3.93 13.5 5.38C14.67 3.93 16.47 3 18.5 3C22.09 3 25 5.91 25 9.5V18H20.5V10C20.5 8.34 19.16 7 17.5 7C15.84 7 14.5 8.34 14.5 10V18H10.5V10C10.5 8.34 9.16 7 7.5 7C5.84 7 4.5 8.34 4.5 10V18H2Z" fill="white"/>
-                </svg>
-              </span>
-              <span>AJ Studio</span>
-            </a>
-
-            {/* Desktop Navigation Links */}
-            <ul className="hero-nav-links">
-              <li><a href="#home">Home</a></li>
-              <li><a href="#services">Services</a></li>
-              <li><a href="#work">Work</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#process">Process</a></li>
-              <li><a href="#faq">FAQ</a></li>
-              <li><a href="#contact">Contact</a></li>
-            </ul>
-
-            {/* Right Action Button */}
-            <div className="hero-nav-right">
-              <a href="#contact" className="btn-lime">
-                Start a Project
-              </a>
-              <button
-                className="hero-mobile-toggle"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                aria-label="Toggle navigation"
-              >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  {mobileMenuOpen ? (
-                    <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" />
-                  ) : (
-                    <path d="M4 7h16M4 12h16M4 17h16" strokeLinecap="round" />
-                  )}
-                </svg>
-              </button>
+      <header className="site-header">
+        <div className="nav-container">
+          {/* Brand Mark */}
+          <a href="#home" className="brand-link" aria-label="AJ Studio Home">
+            <div className="brand-glyph">AJ</div>
+            <div className="brand-text">
+              <span className="brand-name">AJ STUDIO</span>
+              <span className="brand-sub">DESIGN &amp; TECHNOLOGY</span>
             </div>
+          </a>
+
+          {/* Desktop Nav Links */}
+          <nav className="nav-links-desktop" aria-label="Main Navigation">
+            <a href="#work">Work</a>
+            <a href="#solutions">Solutions</a>
+            <a href="#story">Our Story</a>
+            <a href="#process">Process</a>
+            <a href="#insights">Insights</a>
+            <a href="#faq">FAQ</a>
           </nav>
 
-          {/* Mobile Dropdown */}
-          {mobileMenuOpen && (
-            <div style={{
-              background: "rgba(15, 23, 42, 0.96)",
-              padding: "1.5rem",
-              borderRadius: "16px",
-              margin: "0 1.5rem 1rem",
-              backdropFilter: "blur(20px)",
-              display: "flex",
-              flexDirection: "column",
-              gap: "1rem",
-              zIndex: 100,
-            }}>
-              <a href="#home" onClick={() => setMobileMenuOpen(false)} style={{ color: "#fff", fontWeight: 600 }}>Home</a>
-              <a href="#services" onClick={() => setMobileMenuOpen(false)} style={{ color: "#fff", fontWeight: 600 }}>Services</a>
-              <a href="#work" onClick={() => setMobileMenuOpen(false)} style={{ color: "#fff", fontWeight: 600 }}>Work</a>
-              <a href="#about" onClick={() => setMobileMenuOpen(false)} style={{ color: "#fff", fontWeight: 600 }}>About</a>
-              <a href="#process" onClick={() => setMobileMenuOpen(false)} style={{ color: "#fff", fontWeight: 600 }}>Process</a>
-              <a href="#faq" onClick={() => setMobileMenuOpen(false)} style={{ color: "#fff", fontWeight: 600 }}>FAQ</a>
-              <a href="#contact" onClick={() => setMobileMenuOpen(false)} style={{ color: "#fff", fontWeight: 600 }}>Contact</a>
-              <a href="#contact" className="btn-lime" onClick={() => setMobileMenuOpen(false)} style={{ justifyContent: "center" }}>
-                Start a Project ↗
-              </a>
-            </div>
-          )}
-
-          {/* Hero Center Text Content */}
-          <div className="hero-center" id="home">
-            <div className="hero-tagline-pill">
-              <span>⚡</span> Ideas into Digital Experiences
-            </div>
-            <h1 className="hero-heading">
-              Design. Develop. Deliver.<br />
-              Digital solutions for brands.
-            </h1>
-            <p className="hero-subtitle">
-              AJ Studio is an independent digital design and development studio helping businesses transform ideas into meaningful digital experiences through thoughtful design, modern technology and business understanding.
-            </p>
-            <div className="hero-cta-group">
-              <a href="#work" className="btn-glass">
-                Explore Our Work
-              </a>
-              <a href="#contact" className="btn-lime">
-                Start a Project
-                <span className="btn-lime-circle">↗</span>
-              </a>
-            </div>
+          {/* CTA & Mobile Hamburger */}
+          <div className="nav-actions">
+            <a href="#contact" className="btn-primary">
+              <span>Talk To Us</span>
+              <span className="btn-arrow">↗</span>
+            </a>
+            <button
+              className="mobile-toggle"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle navigation menu"
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
           </div>
+        </div>
 
-          {/* 3D Curved Ribbon of Floating Showcase Cards */}
-          <div className="hero-showcase-wrap">
-            <div className="hero-arc-container">
-              {/* Card 1: Vertical Bar Chart */}
-              <div className="arc-card card-bar-chart card-pos-1">
-                <span style={{ fontSize: "0.68rem", fontWeight: 700, color: "#0284c7" }}>Growth Index</span>
-                <div className="mini-bar-row">
-                  <div className="mini-bar" style={{ height: "30%" }} />
-                  <div className="mini-bar" style={{ height: "55%" }} />
-                  <div className="mini-bar" style={{ height: "45%" }} />
-                  <div className="mini-bar" style={{ height: "80%" }} />
-                  <div className="mini-bar" style={{ height: "100%" }} />
-                </div>
-                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.65rem", color: "#64748b" }}>
-                  <span>Q1</span>
-                  <span style={{ color: "#16a34a", fontWeight: 700 }}>+48%</span>
-                </div>
-              </div>
-
-              {/* Card 2: Financial Metrics Card */}
-              <div className="arc-card card-metrics card-pos-2">
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span style={{ fontSize: "0.68rem", color: "#64748b", fontWeight: 600 }}>Efficiency</span>
-                  <span className="card-metrics-badge">+24.8%</span>
-                </div>
-                <div className="card-metrics-val">99.4%</div>
-                <svg className="mini-sparkline" viewBox="0 0 100 35" fill="none">
-                  <path d="M0 28 Q 20 22 40 25 T 70 12 T 100 4" stroke="#16a34a" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                  <path d="M0 28 Q 20 22 40 25 T 70 12 T 100 4 L 100 35 L 0 35 Z" fill="rgba(34, 197, 94, 0.12)" />
-                </svg>
-              </div>
-
-              {/* Card 3: SaaS / CRM Card */}
-              <div className="arc-card card-saas-crm card-pos-3">
-                <div className="saas-crm-head">
-                  <span style={{ fontSize: "0.68rem", fontWeight: 700, color: "#0f172a" }}>CRM Engine</span>
-                  <span className="saas-crm-pill">Active</span>
-                </div>
-                <div style={{ padding: "0.4rem 0" }}>
-                  <div style={{ fontSize: "0.72rem", color: "#64748b" }}>Automated Leads</div>
-                  <div style={{ fontSize: "1.35rem", fontWeight: 800, color: "#0f172a" }}>1,480+</div>
-                </div>
-                <div style={{ fontSize: "0.65rem", color: "#16a34a", fontWeight: 700 }}>
-                  ● Zoho &amp; Next.js Synced
-                </div>
-              </div>
-
-              {/* Card 4: Analytics Area Chart */}
-              <div className="arc-card card-area-chart card-pos-4">
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span className="title">Engagement</span>
-                  <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#0284c7" }} />
-                </div>
-                <div style={{ fontSize: "1.15rem", fontWeight: 800, color: "#0f172a" }}>94.6%</div>
-                <svg viewBox="0 0 120 40" fill="none" style={{ width: "100%", height: "45px" }}>
-                  <path d="M0 32 C 30 35, 45 15, 75 18 C 95 20, 105 5, 120 4" stroke="#0284c7" strokeWidth="2.5" fill="none" />
-                  <path d="M0 32 C 30 35, 45 15, 75 18 C 95 20, 105 5, 120 4 L 120 40 L 0 40 Z" fill="rgba(2, 132, 199, 0.15)" />
-                  <circle cx="120" cy="4" r="3.5" fill="#0284c7" />
-                </svg>
-              </div>
-
-              {/* Card 5: Dark Expertise Card */}
-              <div className="arc-card card-dark-expertise card-pos-5">
-                <div className="pill">● Core Focus</div>
-                <div className="text">
-                  Thoughtful UI/UX &amp;<br />
-                  Modern Web Engineering
-                </div>
-                <div style={{ fontSize: "0.68rem", color: "#94a3b8" }}>Design + Code</div>
-              </div>
-
-              {/* Card 6: Cyan Frosted Glass Play Card */}
-              <div className="arc-card card-cyan-glass card-pos-6">
-                <div className="play-btn-circle">▶</div>
-                <div style={{ fontSize: "0.85rem", fontWeight: 700, letterSpacing: "0.02em" }}>Interactive</div>
-              </div>
-
-              {/* Card 7: 520k+ Stats Dashboard Card */}
-              <div className="arc-card card-stats-preview card-pos-7">
-                <div style={{ display: "flex", justifyContent: "space-between", color: "#64748b" }}>
-                  <span className="label">Monthly Flow</span>
-                  <span>•••</span>
-                </div>
-                <div className="num">520k+</div>
-                <div style={{ height: "6px", width: "100%", background: "#f1f5f9", borderRadius: "3px", overflow: "hidden" }}>
-                  <div style={{ width: "82%", height: "100%", background: "#0284c7" }} />
-                </div>
-              </div>
-
-              {/* Card 8: Mobile Preview Card */}
-              <div className="arc-card card-mobile-preview card-pos-8">
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span style={{ fontSize: "0.65rem", color: "#94a3b8" }}>Mobile UX</span>
-                  <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#22c55e" }} />
-                </div>
-                <div style={{ textAlign: "center", padding: "0.5rem 0" }}>
-                  <div style={{ fontSize: "1.2rem", fontWeight: 800, color: "#ffffff" }}>100%</div>
-                  <div style={{ fontSize: "0.62rem", color: "#94a3b8" }}>Responsive</div>
-                </div>
-                <div style={{ fontSize: "0.62rem", color: "#38bdf8", textAlign: "center" }}>Figma to Next.js</div>
-              </div>
-            </div>
-
-            {/* Social Proof Rating */}
-            <div className="hero-rating-wrap">
-              <div className="hero-rating-text">Rated 4.9/5 by clients across India &amp; Worldwide</div>
-              <div className="hero-stars" aria-label="5 stars rating">★★★★★</div>
-            </div>
-          </div>
-        </header>
-      </div>
+        {/* Mobile Navigation Drawer */}
+        <div className={`mobile-nav-drawer ${mobileMenuOpen ? "open" : ""}`}>
+          <ul className="mobile-nav-list">
+            <li><a href="#work" onClick={() => setMobileMenuOpen(false)}>Work</a></li>
+            <li><a href="#solutions" onClick={() => setMobileMenuOpen(false)}>Solutions</a></li>
+            <li><a href="#story" onClick={() => setMobileMenuOpen(false)}>Our Story</a></li>
+            <li><a href="#process" onClick={() => setMobileMenuOpen(false)}>Process</a></li>
+            <li><a href="#insights" onClick={() => setMobileMenuOpen(false)}>Insights</a></li>
+            <li><a href="#faq" onClick={() => setMobileMenuOpen(false)}>FAQ</a></li>
+            <li><a href="#contact" onClick={() => setMobileMenuOpen(false)}>Contact</a></li>
+          </ul>
+          <a href="#contact" className="btn-primary" style={{ width: "100%" }} onClick={() => setMobileMenuOpen(false)}>
+            <span>Talk To Us</span>
+            <span className="btn-arrow">↗</span>
+          </a>
+        </div>
+      </header>
 
       <main>
         {/* ====================================================================
-            MONOCHROMATIC TOOLS & PARTNER TICKER (Pure White Background)
+            HERO SECTION (Design Asylum Editorial Hero)
             ==================================================================== */}
-        <section className="logo-ticker-section" aria-label="Tools and Selected Projects">
-          <div className="ticker-track">
-            {[1, 2].map((group) => (
-              <div key={group} style={{ display: "flex", gap: "3.5rem", alignItems: "center" }}>
-                <div className="ticker-item">
-                  <svg className="ticker-icon" viewBox="0 0 24 24" fill="currentColor">
-                    <circle cx="12" cy="12" r="10" />
-                  </svg>
-                  <span>Figma UI/UX</span>
+        <section className="hero-section" id="home">
+          <div className="container">
+            <div className="hero-content">
+              {/* Eyebrow Pill */}
+              <div className="hero-pill-badge">
+                <span className="status-dot"></span>
+                <span>Design &amp; Technology Partner for Scaling Companies</span>
+              </div>
+
+              {/* Massive Headline */}
+              <h1 className="hero-h1">
+                Design Partner for scaling companies in{" "}
+                <span className="highlight-dark">India and Worldwide.</span>
+              </h1>
+
+              {/* Refined Subhead */}
+              <p className="hero-lead">
+                Fueling growth through strategic branding, intuitive UI/UX design, modern Next.js development,
+                and intelligent business automation. We deliver end-to-end, from breakthrough concept to production-ready code.
+              </p>
+
+              {/* Action Buttons */}
+              <div className="hero-cta-group">
+                <a href="#contact" className="btn-primary">
+                  <span>Get In Touch</span>
+                  <span className="btn-arrow">↗</span>
+                </a>
+                <a href="#work" className="btn-secondary">
+                  <span>View Our Impact</span>
+                  <span>↓</span>
+                </a>
+              </div>
+
+              {/* 4 Quantitative Metrics Strip */}
+              <div className="hero-metrics-strip">
+                <div className="metric-pill-item">
+                  <div className="metric-pill-num">50+</div>
+                  <div className="metric-pill-label">Digital Products Shipped</div>
                 </div>
-                <div className="ticker-item">
-                  <img src="/assets/indiacodes_logo.png" alt="India Codes" className="ticker-img" />
-                  <span>India Codes</span>
+                <div className="metric-pill-item">
+                  <div className="metric-pill-num">70%</div>
+                  <div className="metric-pill-label">Faster Time to Market</div>
                 </div>
-                <div className="ticker-item">
-                  <svg className="ticker-icon" viewBox="0 0 24 24" fill="currentColor">
-                    <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5" />
-                  </svg>
-                  <span>Next.js Architecture</span>
+                <div className="metric-pill-item">
+                  <div className="metric-pill-num">3x</div>
+                  <div className="metric-pill-label">Team Delivery Velocity</div>
                 </div>
-                <div className="ticker-item">
-                  <img src="/assets/jahan_logo.jpg" alt="Jahan Polymers" className="ticker-img" />
-                  <span>Jahan Polymers</span>
-                </div>
-                <div className="ticker-item">
-                  <svg className="ticker-icon" viewBox="0 0 24 24" fill="currentColor">
-                    <rect x="3" y="3" width="18" height="18" rx="4" />
-                  </svg>
-                  <span>Zoho CRM Workflows</span>
-                </div>
-                <div className="ticker-item">
-                  <img src="/assets/treeindia_logo.png" alt="Tree India Exports" className="ticker-img" />
-                  <span>Tree India</span>
-                </div>
-                <div className="ticker-item">
-                  <svg className="ticker-icon" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                  </svg>
-                  <span>Cloud &amp; Automation</span>
+                <div className="metric-pill-item">
+                  <div className="metric-pill-num">85%</div>
+                  <div className="metric-pill-label">Client Retention &amp; Referrals</div>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
         </section>
 
         {/* ====================================================================
-            • ABOUT US SECTION & SIGNATURE BENTO GRID (Pure White Background)
+            INFINITE MARQUEE (Design Asylum Style Tech & Solutions Ribbon)
             ==================================================================== */}
-        <section className="about-section" id="about">
+        <div className="marquee-ribbon" aria-hidden="true">
+          <div className="marquee-track">
+            <div className="marquee-item">
+              <span>Next.js Fullstack</span><span className="marquee-divider"></span>
+              <span>UI/UX Design</span><span className="marquee-divider"></span>
+              <span>Figma Design Systems</span><span className="marquee-divider"></span>
+              <span>Zoho CRM Workflows</span><span className="marquee-divider"></span>
+              <span>Cloud Enterprise Software</span><span className="marquee-divider"></span>
+              <span>B2B Platforms</span><span className="marquee-divider"></span>
+              <span>AI Integration</span><span className="marquee-divider"></span>
+              <span>Brand Identity</span><span className="marquee-divider"></span>
+              <span>REST APIs &amp; Supabase</span><span className="marquee-divider"></span>
+              <span>Technical SEO</span><span className="marquee-divider"></span>
+            </div>
+            {/* Duplicated for seamless infinite scroll */}
+            <div className="marquee-item">
+              <span>Next.js Fullstack</span><span className="marquee-divider"></span>
+              <span>UI/UX Design</span><span className="marquee-divider"></span>
+              <span>Figma Design Systems</span><span className="marquee-divider"></span>
+              <span>Zoho CRM Workflows</span><span className="marquee-divider"></span>
+              <span>Cloud Enterprise Software</span><span className="marquee-divider"></span>
+              <span>B2B Platforms</span><span className="marquee-divider"></span>
+              <span>AI Integration</span><span className="marquee-divider"></span>
+              <span>Brand Identity</span><span className="marquee-divider"></span>
+              <span>REST APIs &amp; Supabase</span><span className="marquee-divider"></span>
+              <span>Technical SEO</span><span className="marquee-divider"></span>
+            </div>
+          </div>
+        </div>
+
+        {/* ====================================================================
+            SOLUTIONS SECTION (Design Asylum 6-Card Solutions Grid)
+            ==================================================================== */}
+        <section className="solutions-section" id="solutions">
           <div className="container">
-            {/* Centered Heading with inline badges */}
-            <div className="about-header">
-              <div className="pill-section-tag">• ABOUT AJ STUDIO</div>
-              <h2 className="about-title">
-                An independent digital studio<br />
-                dedicated to building
-                <span className="inline-badge-blue">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                    <circle cx="12" cy="12" r="10" />
-                    <line x1="2" y1="12" x2="22" y2="12" />
-                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z" />
-                  </svg>
-                </span>
-                smarter<br />
-                and
-                <span className="inline-badge-lime">
-                  <span className="lime-dot" />
-                </span>
-                more adaptive
-              </h2>
+            <div className="solutions-header">
+              <div className="section-eyebrow-pill">Solutions</div>
+              <h2 className="section-h2">Comprehensive Solutions Tailored For Scale</h2>
+              <p className="section-desc">
+                From zero-to-one product design to enterprise workflow automation, we engineer digital solutions
+                that solve real operational problems and drive revenue.
+              </p>
             </div>
 
-            {/* Signature 3-Column Bento Grid - 100% Studio Brand (NO Personal Photos) */}
-            <div className="bento-grid">
-              {/* Card 1: Left Blue Card with 3D Digital Craft Visual */}
-              <div className="bento-card-blue">
-                <div className="bento-blue-top">
-                  <span className="bento-studio-logo">AJ STUDIO</span>
-                  <div className="bento-sound-btn" aria-label="Equalizer indicator">
-                    <span />
-                    <span />
-                    <span />
+            <div className="solutions-grid">
+              {SOLUTIONS.map((sol) => (
+                <div key={sol.num} className="solution-card">
+                  <div className="solution-card-top">
+                    <div className="solution-badge-row">
+                      <span className="solution-index">{sol.num}</span>
+                      <div className="solution-icon-wrap">{sol.icon}</div>
+                    </div>
+                    <h3 className="solution-title">{sol.title}</h3>
+                    <p className="solution-desc">{sol.desc}</p>
+                    <ul className="solution-features">
+                      {sol.features.map((item, idx) => (
+                        <li key={idx}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="solution-tags">
+                    {sol.tags.map((tag, idx) => (
+                      <span key={idx} className="solution-tag-pill">{tag}</span>
+                    ))}
                   </div>
                 </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
-                <div className="bento-graphic-wrap">
-                  <img
-                    src="/assets/bento_digital_craft.jpg"
-                    alt="AJ Studio 3D Digital Craft"
-                    className="bento-graphic-img"
-                  />
-                </div>
-
-                <div className="bento-blue-overlay-card">
-                  <div className="bento-stat-num">50+</div>
-                  <p className="bento-stat-text">
-                    Digital products, web platforms, and automated business solutions delivered.
-                  </p>
-                </div>
-              </div>
-
-              {/* Card 2: Middle Clean White Card */}
-              <div className="bento-card-white">
-                <div>
-                  <div className="bento-commitment-lbl">Commitment to measurable</div>
-                  <div className="bento-100-num">100%</div>
-                </div>
-
-                <div className="bento-icons-stack">
-                  <div className="bento-icon-badge" title="UI/UX Design">🎨</div>
-                  <div className="bento-icon-badge" title="Web Development">💻</div>
-                  <div className="bento-icon-badge" title="Zoho CRM & Automation">⚙️</div>
-                  <div className="bento-icon-badge" title="Digital Branding">✨</div>
-                </div>
-
-                <p className="bento-quote-text">
-                  &ldquo;AJ Studio transformed our product into a seamless, high-converting digital experience. Intuitive, fast, and remarkably crafted.&rdquo;
+        {/* ====================================================================
+            VIEW OUR IMPACT / FEATURED CASE STUDIES SHOWCASE
+            ==================================================================== */}
+        <section className="impact-section" id="work">
+          <div className="container">
+            <div className="impact-header-row">
+              <div>
+                <div className="section-eyebrow-pill">View Our Impact</div>
+                <h2 className="section-h2">Selected Work &amp; Case Studies</h2>
+                <p className="section-desc">
+                  Explore how we combine thoughtful design, modern Next.js engineering, and business understanding
+                  to build measurable client outcomes.
                 </p>
               </div>
 
-              {/* Column 3: Stacked Neon Lime Card + Dark Obsidian Card */}
-              <div className="bento-col-stacked">
-                {/* Top Card: Neon Lime Card */}
-                <div className="bento-card-lime">
-                  <div className="bento-lime-label">Data Points &amp; Workflows</div>
-                  <div className="bento-lime-stat">520k+</div>
-                  <p className="bento-lime-desc">
-                    Analyzed monthly to power smarter digital products &amp; CRM workflows.
+              {/* Category Filter Pills */}
+              <div className="filter-pill-bar">
+                <button
+                  className={`filter-pill-btn ${activeFilter === "all" ? "active" : ""}`}
+                  onClick={() => setActiveFilter("all")}
+                >
+                  All Works
+                </button>
+                <button
+                  className={`filter-pill-btn ${activeFilter === "apps" ? "active" : ""}`}
+                  onClick={() => setActiveFilter("apps")}
+                >
+                  Web &amp; Mobile
+                </button>
+                <button
+                  className={`filter-pill-btn ${activeFilter === "cloud" ? "active" : ""}`}
+                  onClick={() => setActiveFilter("cloud")}
+                >
+                  Cloud Enterprise
+                </button>
+                <button
+                  className={`filter-pill-btn ${activeFilter === "automation" ? "active" : ""}`}
+                  onClick={() => setActiveFilter("automation")}
+                >
+                  Business Automation
+                </button>
+                <button
+                  className={`filter-pill-btn ${activeFilter === "branding" ? "active" : ""}`}
+                  onClick={() => setActiveFilter("branding")}
+                >
+                  Branding
+                </button>
+              </div>
+            </div>
+
+            {/* Project Cards List */}
+            <div className="impact-cards-list">
+              {filteredProjects.map((project) => (
+                <article key={project.id} className="impact-case-card">
+                  {/* Left Column: Context & Narrative */}
+                  <div className="impact-card-content">
+                    <div>
+                      <div className="impact-meta-top">
+                        <span className="impact-index-pill">{project.num}</span>
+                        <span className="impact-cat-pill">{project.category}</span>
+                      </div>
+                      <h3 className="impact-client-name">{project.client}</h3>
+                      <div className="impact-scope-chips">
+                        {project.scope.map((tag, idx) => (
+                          <span key={idx} className="scope-chip">{tag}</span>
+                        ))}
+                      </div>
+                      <p className="impact-narrative">{project.narrative}</p>
+
+                      {/* Result Strip */}
+                      <div className="impact-result-strip">
+                        <div className="result-strip-label">Measurable Client Impact</div>
+                        <div className="result-strip-value">{project.impactMetric}</div>
+                      </div>
+                    </div>
+
+                    {/* Card Actions & Tech Stack */}
+                    <div className="impact-card-bottom">
+                      <div className="impact-tech-row">
+                        {project.tech.map((t, idx) => (
+                          <span key={idx} className="tech-tag-sm">{t}</span>
+                        ))}
+                      </div>
+                      <div style={{ display: "flex", gap: "0.75rem" }}>
+                        <button
+                          className="btn-secondary"
+                          style={{ padding: "0.55rem 1.1rem", fontSize: "0.82rem" }}
+                          onClick={() => setSelectedCase(project)}
+                        >
+                          Case Study ▾
+                        </button>
+                        <a
+                          href={project.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn-primary"
+                          style={{ padding: "0.55rem 1.1rem", fontSize: "0.82rem" }}
+                        >
+                          <span>Live Site</span>
+                          <span className="btn-arrow">↗</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Column: Visual Frame */}
+                  <div className="impact-card-visual">
+                    <div className="visual-browser-mockup">
+                      <div className="browser-header-dots">
+                        <span className="b-dot b-dot-red"></span>
+                        <span className="b-dot b-dot-yellow"></span>
+                        <span className="b-dot b-dot-green"></span>
+                      </div>
+                      <div className="browser-screen-frame">
+                        <Image
+                          src={project.image}
+                          alt={`${project.client} project preview`}
+                          width={800}
+                          height={500}
+                          className="project-mockup-image"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ====================================================================
+            METRICS & SOCIAL PROOF BANNER (Design Asylum Dark Band)
+            ==================================================================== */}
+        <section className="metrics-banner-section">
+          <div className="container">
+            <h2 className="metrics-banner-headline">
+              Where <span>85% of clients stay</span>, and 90% pass the word.
+            </h2>
+            <div className="metrics-4-grid">
+              <div className="metric-banner-box">
+                <div className="metric-banner-num">50<span>+</span></div>
+                <div className="metric-banner-text">Products, platforms, and automated systems shipped</div>
+              </div>
+              <div className="metric-banner-box">
+                <div className="metric-banner-num">70<span>%</span></div>
+                <div className="metric-banner-text">Faster to production using modern Next.js workflows</div>
+              </div>
+              <div className="metric-banner-box">
+                <div className="metric-banner-num">3<span>x</span></div>
+                <div className="metric-banner-text">Engineering and design velocity with zero agency bloat</div>
+              </div>
+              <div className="metric-banner-box">
+                <div className="metric-banner-num">15<span>+</span></div>
+                <div className="metric-banner-text">Countries and global markets reached by our client platforms</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ====================================================================
+            OUR STORY SECTION (Design Asylum Philosophy)
+            ==================================================================== */}
+        <section className="story-section" id="story">
+          <div className="container">
+            <div className="story-grid-2">
+              <div className="story-left">
+                <div className="section-eyebrow-pill">Our Story</div>
+                <h2>Creative Thinking Meets Scalable Digital Technology.</h2>
+                <p>
+                  AJ Studio is an independent digital studio founded on a clear belief: great digital products
+                  are not created by bloated agency committees or disconnected handoffs.
+                </p>
+                <p>
+                  They are built through the tight union of <strong>thoughtful UI/UX design</strong>,
+                  <strong> modern Next.js engineering</strong>, and <strong>practical business understanding</strong>.
+                  When you partner with us, you work directly with experienced practitioners who understand
+                  conversion rates, system architecture, and authentic brand presence.
+                </p>
+                <a href="#contact" className="btn-primary" style={{ marginTop: "1rem" }}>
+                  <span>Partner With Us</span>
+                  <span className="btn-arrow">↗</span>
+                </a>
+              </div>
+
+              <div className="story-pillars-grid">
+                <div className="story-pillar-item">
+                  <div className="pillar-icon">🎯</div>
+                  <h4 className="pillar-title">Design with Purpose</h4>
+                  <p className="pillar-desc">
+                    Every layout, typography scale, and button placement is chosen for a measurable reason — never decorative fluff.
                   </p>
                 </div>
-
-                {/* Bottom Card: Dark Obsidian Card */}
-                <div className="bento-card-dark">
-                  <div className="bento-dark-lbl">Global Clients</div>
-                  <div className="bento-dark-val">15+</div>
+                <div className="story-pillar-item">
+                  <div className="pillar-icon">⚡</div>
+                  <h4 className="pillar-title">Engineered for Velocity</h4>
+                  <p className="pillar-desc">
+                    We code with modern Next.js, TypeScript, and clean CSS, achieving sub-second loads and 99+ PageSpeed scores.
+                  </p>
+                </div>
+                <div className="story-pillar-item">
+                  <div className="pillar-icon">💼</div>
+                  <h4 className="pillar-title">Business Understanding</h4>
+                  <p className="pillar-desc">
+                    We align technical solutions with your bottom line — lead funnels, operational savings, and customer retention.
+                  </p>
+                </div>
+                <div className="story-pillar-item">
+                  <div className="pillar-icon">🔄</div>
+                  <h4 className="pillar-title">Continuous Evolution</h4>
+                  <p className="pillar-desc">
+                    Digital products should evolve as your business scales. We provide proactive post-launch improvements.
+                  </p>
                 </div>
               </div>
             </div>
@@ -620,126 +789,26 @@ export default function Home() {
         </section>
 
         {/* ====================================================================
-            SERVICES SECTION (The 4 Core Categories from User Brief)
-            ==================================================================== */}
-        <section className="services-section" id="services">
-          <div className="container">
-            <div className="section-head-center">
-              <span className="pill-section-tag">• OUR SERVICES</span>
-              <h2 className="section-h2">Digital Solutions Designed Around Your Business</h2>
-              <p className="section-desc">
-                From user interface wireframes to high-performance Next.js code and CRM automations.
-              </p>
-            </div>
-
-            <div className="services-grid-4">
-              {SERVICES.map((s) => (
-                <div key={s.title} className="service-card-4">
-                  <div>
-                    <div className="service-num-badge">{s.num}</div>
-                    <h3>{s.title}</h3>
-                    <p>{s.desc}</p>
-                  </div>
-                  <ul className="service-item-bullets">
-                    {s.items.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ====================================================================
-            FEATURED WORK / PROJECTS SHOWCASE (Clean Light Mode)
-            ==================================================================== */}
-        <section className="projects-section" id="work">
-          <div className="container">
-            <div className="section-head-center">
-              <span className="pill-section-tag">• SELECTED PROJECTS</span>
-              <h2 className="section-h2">Thoughtful Solutions in Production</h2>
-              <p className="section-desc">
-                A selection of high-performing platforms engineered for our trusted partners.
-              </p>
-            </div>
-
-            <div className="projects-list">
-              {PROJECTS.map((p, idx) => (
-                <div key={p.id} className={`project-item-card ${idx % 2 === 1 ? "reverse" : ""}`}>
-                  {/* Visual Preview */}
-                  <div className="project-visual-col">
-                    <img
-                      src={p.image}
-                      alt={`${p.title} Preview`}
-                      className="project-visual-img"
-                    />
-                    <div className="project-badge-overlay">
-                      <span className="live-pulse-dot" />
-                      PROJECT {p.num}
-                    </div>
-                  </div>
-
-                  {/* Project Info */}
-                  <div className="project-info-col">
-                    <div>
-                      <div className="project-top-meta">
-                        <img src={p.logo} alt={p.client} className="project-client-logo-img" />
-                        <div>
-                          <div className="project-type-tag">{p.clientType}</div>
-                          <div style={{ fontSize: "0.82rem", color: "#64748b" }}>{p.client}</div>
-                        </div>
-                      </div>
-
-                      <h3 className="project-title-h3">{p.title}</h3>
-                      <p className="project-description">{p.desc}</p>
-
-                      <div className="project-tech-pills">
-                        {p.tech.map((t) => (
-                          <span key={t} className="tech-tag-pill">{t}</span>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="project-action-row">
-                      <a
-                        href={p.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn-visit"
-                      >
-                        Visit Live Site ↗
-                      </a>
-                      <a href="#contact" className="btn-glass" style={{ color: "#0f172a", borderColor: "#cbd5e1" }}>
-                        Discuss Similar Project
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ====================================================================
-            PROCESS / HOW WE WORK (6-Stage Sprint)
+            OUR PROCESS SECTION (Design Asylum Methodology)
             ==================================================================== */}
         <section className="process-section" id="process">
           <div className="container">
-            <div className="section-head-center">
-              <span className="pill-section-tag">• HOW WE WORK</span>
-              <h2 className="section-h2">From First Conversation to Final Delivery</h2>
+            <div style={{ marginBottom: "3rem" }}>
+              <div className="section-eyebrow-pill">Our Process</div>
+              <h2 className="section-h2">From First Conversation to Production Launch</h2>
               <p className="section-desc">
-                A disciplined engineering and design workflow that guarantees transparency, speed, and high quality.
+                A proven, disciplined sprint framework that delivers products to market 70% faster without sacrificing craftsmanship.
               </p>
             </div>
 
             <div className="process-grid-6">
               {PROCESS_STEPS.map((step) => (
-                <div key={step.num} className="process-card-item">
-                  <div className="process-num-val">{step.num}</div>
-                  <h3>{step.title}</h3>
-                  <p>{step.desc}</p>
+                <div key={step.num} className="process-step-card">
+                  <div>
+                    <div className="process-step-num">{step.num}</div>
+                    <h3 className="process-step-title">{step.title}</h3>
+                  </div>
+                  <p className="process-step-desc">{step.desc}</p>
                 </div>
               ))}
             </div>
@@ -747,24 +816,38 @@ export default function Home() {
         </section>
 
         {/* ====================================================================
-            WHY AJ STUDIO (6 Core Principles from Brief)
+            TESTIMONIALS SECTION (Design Asylum Quote Style)
             ==================================================================== */}
-        <section className="why-section">
+        <section className="testimonials-section">
           <div className="container">
-            <div className="section-head-center">
-              <span className="pill-section-tag">• WHY AJ STUDIO</span>
-              <h2 className="section-h2">Aesthetics Combined with Functionality</h2>
+            <div style={{ marginBottom: "3rem" }}>
+              <div className="section-eyebrow-pill">Client Voices</div>
+              <h2 className="section-h2">What Founders &amp; Operators Say</h2>
               <p className="section-desc">
-                We believe great digital products are built through a balance of creativity, usability, and business understanding.
+                Real feedback from companies whose platforms we designed, developed, and automated.
               </p>
             </div>
 
-            <div className="why-grid-6">
-              {WHY_US.map((item) => (
-                <div key={item.title} className="why-card">
-                  <div className="why-card-icon">{item.icon}</div>
-                  <h3>{item.title}</h3>
-                  <p>{item.desc}</p>
+            <div className="testimonials-grid-3">
+              {TESTIMONIALS.map((t, idx) => (
+                <div key={idx} className="testimonial-card-item">
+                  <div>
+                    <div className="quote-stars-row">{t.stars}</div>
+                    <blockquote className="quote-body-text">&ldquo;{t.quote}&rdquo;</blockquote>
+                  </div>
+                  <div className="quote-author-row">
+                    <Image
+                      src={t.avatar}
+                      alt={t.name}
+                      width={44}
+                      height={44}
+                      className="author-avatar"
+                    />
+                    <div className="author-info">
+                      <span className="author-name">{t.name}</span>
+                      <span className="author-role">{t.role}</span>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
@@ -772,177 +855,233 @@ export default function Home() {
         </section>
 
         {/* ====================================================================
-            FREQUENTLY ASKED QUESTIONS (FAQ Accordion)
+            INSIGHTS SECTION (Design Asylum Thought Leadership)
+            ==================================================================== */}
+        <section className="insights-section" id="insights">
+          <div className="container">
+            <div style={{ marginBottom: "3rem" }}>
+              <div className="section-eyebrow-pill">Insights &amp; Inspiration</div>
+              <h2 className="section-h2">Perspectives on Design, Code &amp; Growth</h2>
+              <p className="section-desc">
+                Actionable thoughts on modern UI/UX design, Next.js architecture, and operational automation.
+              </p>
+            </div>
+
+            <div className="insights-grid-3">
+              {INSIGHTS.map((item, idx) => (
+                <article key={idx} className="insight-card-item">
+                  <div>
+                    <div className="insight-tag-row">
+                      <span className="insight-cat-tag">{item.cat}</span>
+                      <span className="insight-read-time">{item.time}</span>
+                    </div>
+                    <h3 className="insight-title">{item.title}</h3>
+                    <p style={{ fontSize: "0.92rem", color: "var(--text-secondary)", lineHeight: 1.6 }}>
+                      {item.desc}
+                    </p>
+                  </div>
+                  <span className="insight-read-link">
+                    Read Guide <span>→</span>
+                  </span>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ====================================================================
+            FAQ SECTION (Interactive Accordion)
             ==================================================================== */}
         <section className="faq-section" id="faq">
           <div className="container">
-            <div className="section-head-center">
-              <span className="pill-section-tag">• FREQUENTLY ASKED QUESTIONS</span>
-              <h2 className="section-h2">Everything You Need to Know</h2>
-              <p className="section-desc">
-                Common questions about how we work, project scopes, and collaborations.
-              </p>
-            </div>
-
-            <div className="faq-list">
-              {FAQS.map((faq, idx) => (
-                <div
-                  key={faq.q}
-                  className="faq-item"
-                  onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                >
-                  <div className="faq-question">
-                    <span>{faq.q}</span>
-                    <span style={{ fontSize: "1.2rem", color: "var(--sky-blue)" }}>
-                      {openFaq === idx ? "−" : "+"}
-                    </span>
-                  </div>
-                  {openFaq === idx && (
-                    <div className="faq-answer">{faq.a}</div>
-                  )}
+            <div className="faq-layout-2">
+              <div>
+                <div className="section-eyebrow-pill">FAQ</div>
+                <h2 className="section-h2">Frequently Asked Questions</h2>
+                <p className="section-desc">
+                  Have questions about working with AJ Studio? Here are answers to the most common questions we receive.
+                </p>
+                <div style={{ marginTop: "2rem" }}>
+                  <a href="#contact" className="btn-primary">
+                    <span>Have Another Question?</span>
+                    <span className="btn-arrow">↗</span>
+                  </a>
                 </div>
-              ))}
+              </div>
+
+              <div className="faq-list">
+                {FAQS.map((faq, idx) => (
+                  <div
+                    key={idx}
+                    className={`faq-accordion-item ${openFaq === idx ? "open" : ""}`}
+                  >
+                    <button
+                      className="faq-question-btn"
+                      onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                      aria-expanded={openFaq === idx}
+                    >
+                      <span>{faq.q}</span>
+                      <span className="faq-toggle-icon">+</span>
+                    </button>
+                    {openFaq === idx && (
+                      <div className="faq-answer-pane">
+                        <p>{faq.a}</p>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
 
         {/* ====================================================================
-            CONTACT SECTION (With ajstudio.projects@gmail.com & 6378151265)
+            CONTACT SECTION (Design Asylum "Got a project? Let's Connect")
             ==================================================================== */}
         <section className="contact-section" id="contact">
           <div className="container">
-            <div className="contact-card-wrap">
-              {/* Left Brand Panel */}
-              <div className="contact-info-side">
-                <div>
-                  <span className="pill-section-tag" style={{ color: "var(--neon-lime)" }}>• START A PROJECT</span>
-                  <h2>
-                    Let&apos;s build something meaningful.
-                  </h2>
-                  <p>
-                    Have an idea, a business challenge, or a project in mind? Let&apos;s discuss how AJ Studio can help turn your vision into an impactful digital solution.
-                  </p>
-                </div>
+            <div className="contact-layout-2">
+              {/* Left Column: Direct Inquiries */}
+              <div>
+                <div className="section-eyebrow-pill">Let&apos;s Connect</div>
+                <h2 className="section-h2">
+                  Got a project, collaboration, or question? Let&apos;s Connect
+                </h2>
+                <p className="section-desc">
+                  Have an idea, business challenge, or need a dedicated digital design &amp; engineering partner?
+                  Reach out directly and we will respond within 24 business hours.
+                </p>
 
-                <ul className="contact-features-list">
-                  <li className="contact-feature-item">
-                    <span>✉️</span>
-                    <a href="mailto:ajstudio.projects@gmail.com">ajstudio.projects@gmail.com</a>
-                  </li>
-                  <li className="contact-feature-item">
-                    <span>📞</span>
-                    <a href="tel:+916378151265">+91 6378151265</a>
-                  </li>
-                  <li className="contact-feature-item">
-                    <span>🌐</span>
-                    <span>Serving Clients in India &amp; Worldwide</span>
-                  </li>
-                  <li className="contact-feature-item">
-                    <span>⚡</span>
-                    <span>Direct Communication &amp; 24h Response</span>
-                  </li>
-                </ul>
+                <div className="contact-direct-cards">
+                  <a href="mailto:ajstudio.projects@gmail.com" className="contact-channel-card">
+                    <div className="channel-icon-glyph">✉</div>
+                    <div className="channel-text-info">
+                      <span className="channel-label">Official Studio Email</span>
+                      <span className="channel-val">ajstudio.projects@gmail.com</span>
+                    </div>
+                  </a>
 
-                <div style={{ fontSize: "0.82rem", color: "rgba(255,255,255,0.7)" }}>
-                  AJ Studio &copy; 2026. All rights reserved.
+                  <a href="tel:+916378151265" className="contact-channel-card">
+                    <div className="channel-icon-glyph">📞</div>
+                    <div className="channel-text-info">
+                      <span className="channel-label">Direct Phone &amp; Call</span>
+                      <span className="channel-val">+91 6378151265</span>
+                    </div>
+                  </a>
+
+                  <a
+                    href="https://wa.me/916378151265"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="contact-channel-card"
+                  >
+                    <div className="channel-icon-glyph" style={{ background: "#10b981" }}>💬</div>
+                    <div className="channel-text-info">
+                      <span className="channel-label">WhatsApp Quick Chat</span>
+                      <span className="channel-val">Chat on WhatsApp ↗</span>
+                    </div>
+                  </a>
                 </div>
               </div>
 
-              {/* Right Form Panel */}
-              <div className="contact-form-side">
-                {formState === "success" ? (
-                  <div style={{ textAlign: "center", padding: "3rem 1rem" }}>
-                    <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>✅</div>
-                    <h3 style={{ fontSize: "1.5rem", fontWeight: 800, marginBottom: "0.5rem" }}>Inquiry Received!</h3>
-                    <p style={{ color: "#64748b" }}>We&apos;ll review your requirements and respond within 24 hours.</p>
-                  </div>
-                ) : (
-                  <form onSubmit={handleSubmit}>
-                    <div className="form-group">
-                      <label htmlFor="name">Your Name / Company</label>
+              {/* Right Column: Inquiry Form */}
+              <div className="contact-form-card">
+                <h3 style={{ fontFamily: "var(--font-heading)", fontSize: "1.45rem", fontWeight: 800, marginBottom: "1.5rem" }}>
+                  Schedule a Project Discussion
+                </h3>
+                <form onSubmit={handleSubmit}>
+                  <div className="form-grid-2">
+                    <div className="form-field-group">
+                      <label className="field-label" htmlFor="clientName">Your Name *</label>
                       <input
-                        id="name"
+                        id="clientName"
                         type="text"
-                        placeholder="e.g. Rahul Sharma / TechCorp"
-                        className="form-input"
+                        required
+                        placeholder="e.g. Rahul Sharma"
+                        className="field-input"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        required
                       />
                     </div>
-
-                    <div className="form-group">
-                      <label htmlFor="email">Work Email</label>
+                    <div className="form-field-group">
+                      <label className="field-label" htmlFor="clientEmail">Work Email *</label>
                       <input
-                        id="email"
+                        id="clientEmail"
                         type="email"
+                        required
                         placeholder="you@company.com"
-                        className="form-input"
+                        className="field-input"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        required
                       />
                     </div>
+                  </div>
 
-                    <div className="form-group">
-                      <label htmlFor="phone">Phone / WhatsApp Number</label>
+                  <div className="form-grid-2">
+                    <div className="form-field-group">
+                      <label className="field-label" htmlFor="clientPhone">Phone / WhatsApp *</label>
                       <input
-                        id="phone"
+                        id="clientPhone"
                         type="tel"
-                        placeholder="+91 63781 51265"
-                        className="form-input"
+                        required
+                        placeholder="+91 98765 43210"
+                        className="field-input"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        required
                       />
                     </div>
-
-                    <div className="form-group">
-                      <label htmlFor="interest">Service Required</label>
+                    <div className="form-field-group">
+                      <label className="field-label" htmlFor="serviceInterest">Solution Needed *</label>
                       <select
-                        id="interest"
-                        className="form-select"
+                        id="serviceInterest"
+                        className="field-select"
                         value={formData.interest}
                         onChange={(e) => setFormData({ ...formData, interest: e.target.value })}
-                        required
                       >
-                        <option value="" disabled>Select a service category</option>
-                        <option value="uiux-design">UI/UX Design (Website / Mobile / SaaS / CRM)</option>
-                        <option value="web-development">Website Design &amp; Development (Next.js)</option>
-                        <option value="business-solutions">Business Solutions (Zoho CRM / Automation)</option>
-                        <option value="branding">Branding &amp; Creative Design</option>
-                        <option value="consulting">End-to-End Digital Solution</option>
+                        <option value="UI/UX Design & Next.js Website">UI/UX Design &amp; Next.js Website</option>
+                        <option value="Cloud Enterprise & SaaS Dashboard">Cloud Enterprise &amp; SaaS Dashboard</option>
+                        <option value="Zoho CRM & Business Automation">Zoho CRM &amp; Business Automation</option>
+                        <option value="Brand Identity & Design System">Brand Identity &amp; Design System</option>
+                        <option value="Full Digital Transformation">Full Digital Transformation</option>
                       </select>
                     </div>
+                  </div>
 
-                    <div className="form-group">
-                      <label htmlFor="message">Project Requirements</label>
-                      <textarea
-                        id="message"
-                        rows={4}
-                        placeholder="Tell us about your project, goals, timeline, or questions..."
-                        className="form-textarea"
-                        value={formData.message}
-                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        required
-                      />
+                  <div className="form-field-group">
+                    <label className="field-label" htmlFor="projectMessage">Project Overview &amp; Goals *</label>
+                    <textarea
+                      id="projectMessage"
+                      required
+                      placeholder="Briefly describe your project, timeline, target audience, or specific challenge..."
+                      className="field-textarea"
+                      value={formData.message}
+                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={formState === "loading"}
+                    className="btn-primary form-submit-btn"
+                  >
+                    <span>{formState === "loading" ? "Submitting Inquiry..." : "Submit Project Inquiry"}</span>
+                    <span className="btn-arrow">↗</span>
+                  </button>
+
+                  {formState === "success" && (
+                    <div className="form-feedback-alert alert-success">
+                      <span>✓</span>
+                      <span>Thank you! Your inquiry has been received. We will contact you within 24 hours.</span>
                     </div>
+                  )}
 
-                    {formState === "error" && (
-                      <p style={{ color: "#ef4444", fontSize: "0.85rem", marginBottom: "1rem" }}>
-                        Something went wrong. Please check your fields or email us directly at ajstudio.projects@gmail.com.
-                      </p>
-                    )}
-
-                    <button
-                      type="submit"
-                      className="btn-submit"
-                      disabled={formState === "loading"}
-                    >
-                      {formState === "loading" ? "Submitting Inquiry..." : "Submit Project Inquiry ↗"}
-                    </button>
-                  </form>
-                )}
+                  {formState === "error" && (
+                    <div className="form-feedback-alert alert-error">
+                      <span>✕</span>
+                      <span>Submission encountered an issue. Please email us directly at ajstudio.projects@gmail.com</span>
+                    </div>
+                  )}
+                </form>
               </div>
             </div>
           </div>
@@ -950,89 +1089,168 @@ export default function Home() {
       </main>
 
       {/* ====================================================================
-          FOOTER (Clean Light Mode)
+          FOOTER SECTION (Design Asylum Agency Footer)
           ==================================================================== */}
-      <footer className="footer-main">
+      <footer className="site-footer">
         <div className="container">
           <div className="footer-top-row">
-            <div>
-              <div className="footer-brand">
-                AJ Studio<span style={{ color: "var(--sky-blue)" }}>.</span>
-              </div>
-              <p style={{ fontSize: "0.88rem", color: "#64748b", marginTop: "0.4rem" }}>
-                Ideas into digital experiences. Design. Develop. Deliver.
+            {/* Brand Col */}
+            <div className="footer-brand-col">
+              <a href="#home" className="brand-link" style={{ color: "#ffffff" }}>
+                <div className="brand-glyph" style={{ background: "#ffffff", color: "#0a0d14" }}>AJ</div>
+                <div className="brand-text">
+                  <span className="brand-name" style={{ color: "#ffffff" }}>AJ STUDIO</span>
+                  <span className="brand-sub" style={{ color: "var(--text-light-muted)" }}>DIGITAL STUDIO</span>
+                </div>
+              </a>
+              <p>
+                Independent digital design and technology studio helping scaling companies transform ideas into
+                meaningful, high-impact digital experiences.
               </p>
             </div>
-            <ul className="footer-links">
-              <li><a href="#home">Home</a></li>
-              <li><a href="#services">Services</a></li>
-              <li><a href="#work">Work</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#process">Process</a></li>
-              <li><a href="#faq">FAQ</a></li>
-              <li><a href="#contact">Contact</a></li>
-            </ul>
-          </div>
-          <div className="footer-bottom-row">
+
+            {/* Quick Links */}
             <div>
-              &copy; 2026 AJ Studio. Independent Digital Design &amp; Development Studio.
+              <div className="footer-col-title">Navigation</div>
+              <ul className="footer-link-list">
+                <li><a href="#work">Featured Work</a></li>
+                <li><a href="#solutions">Solutions</a></li>
+                <li><a href="#story">Our Story</a></li>
+                <li><a href="#process">Our Process</a></li>
+                <li><a href="#insights">Insights</a></li>
+                <li><a href="#faq">FAQ</a></li>
+              </ul>
             </div>
-            <div style={{ display: "flex", gap: "1.5rem" }}>
-              <a href="mailto:ajstudio.projects@gmail.com">ajstudio.projects@gmail.com</a>
-              <a href="tel:+916378151265">+91 6378151265</a>
+
+            {/* Solutions */}
+            <div>
+              <div className="footer-col-title">Capabilities</div>
+              <ul className="footer-link-list">
+                <li><a href="#solutions">Web &amp; Mobile Apps</a></li>
+                <li><a href="#solutions">Cloud Enterprise</a></li>
+                <li><a href="#solutions">Zoho CRM Automation</a></li>
+                <li><a href="#solutions">Branding &amp; Identity</a></li>
+                <li><a href="#solutions">AI Adoption</a></li>
+                <li><a href="#solutions">Technical SEO</a></li>
+              </ul>
+            </div>
+
+            {/* Direct Connect */}
+            <div>
+              <div className="footer-col-title">Direct Inquiries</div>
+              <div className="footer-contact-items">
+                <a href="mailto:ajstudio.projects@gmail.com">ajstudio.projects@gmail.com</a>
+                <a href="tel:+916378151265">+91 6378151265</a>
+                <span style={{ fontSize: "0.84rem", color: "var(--text-light-muted)", marginTop: "0.5rem" }}>
+                  India &amp; Global Remote Collaboration
+                </span>
+                <a href="/secret-admin" style={{ fontSize: "0.78rem", color: "#64748b", marginTop: "0.75rem" }}>
+                  Portal Sign-In →
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="footer-bottom-bar">
+            <p className="footer-copy-text">
+              &copy; 2026 AJ Studio. All Rights Reserved. Ideas into digital experiences.
+            </p>
+            <div className="footer-social-row">
+              <a href="https://wa.me/916378151265" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+              <a href="https://github.com/jagruti-gothwal/AJ-Studio" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a href="mailto:ajstudio.projects@gmail.com">Email</a>
             </div>
           </div>
         </div>
       </footer>
 
       {/* ====================================================================
-          FLOATING MUSIC PLAYER
+          MODAL: CASE STUDY DEEP DIVE (Framer / Design Asylum Style)
           ==================================================================== */}
-      <div className="music-player-wrap">
-        <div className={`music-drawer ${musicOpen ? "visible" : "hidden"}`}>
-          <div className="music-drawer-head">
-            <span className="music-drawer-title">Atmospheric Lofi</span>
-            <div className={`music-eq ${playing ? "" : "paused"}`}>
-              <span />
-              <span />
-              <span />
-              <span />
-            </div>
-          </div>
-
-          <div className="music-track-details">
-            <div className="music-track-art">{currentTrack.emoji}</div>
-            <div>
-              <div className="music-track-name">{currentTrack.title}</div>
-              <div className="music-artist-name">{currentTrack.artist}</div>
-            </div>
-          </div>
-
-          <div className="music-bar-wrap">
-            <div className="music-bar-fill" style={{ width: `${progress}%` }} />
-          </div>
-
-          <div className="music-ctrls">
-            <button className="music-ctrl-btn" onClick={prevTrack} aria-label="Previous">⏮</button>
+      {selectedCase && (
+        <div className="modal-overlay" onClick={() => setSelectedCase(null)}>
+          <div
+            className="modal-dialog-content"
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+          >
             <button
-              className="music-ctrl-play"
-              onClick={() => setPlaying(!playing)}
-              aria-label={playing ? "Pause" : "Play"}
+              className="modal-close-btn"
+              onClick={() => setSelectedCase(null)}
+              aria-label="Close dialog"
             >
-              {playing ? "⏸" : "▶"}
+              ✕
             </button>
-            <button className="music-ctrl-btn" onClick={nextTrack} aria-label="Next">⏭</button>
+
+            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
+              <span className="impact-index-pill">{selectedCase.num}</span>
+              <span className="impact-cat-pill">{selectedCase.category}</span>
+            </div>
+
+            <h3 style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", fontWeight: 800, color: "var(--text-dark)", marginBottom: "0.5rem" }}>
+              {selectedCase.client}
+            </h3>
+
+            <div className="impact-scope-chips" style={{ marginBottom: "1.5rem" }}>
+              {selectedCase.scope.map((tag, idx) => (
+                <span key={idx} className="scope-chip">{tag}</span>
+              ))}
+            </div>
+
+            <div style={{ borderRadius: "16px", overflow: "hidden", marginBottom: "1.75rem", background: "#0f1422" }}>
+              <Image
+                src={selectedCase.image}
+                alt={selectedCase.client}
+                width={800}
+                height={460}
+                style={{ width: "100%", height: "auto", maxHeight: "360px", objectFit: "cover" }}
+              />
+            </div>
+
+            <div style={{ marginBottom: "1.5rem" }}>
+              <h4 style={{ fontFamily: "var(--font-heading)", fontSize: "1.1rem", fontWeight: 700, marginBottom: "0.5rem" }}>
+                The Challenge
+              </h4>
+              <p style={{ color: "var(--text-secondary)", fontSize: "0.96rem", lineHeight: 1.65 }}>
+                {selectedCase.challenges}
+              </p>
+            </div>
+
+            <div style={{ marginBottom: "1.5rem" }}>
+              <h4 style={{ fontFamily: "var(--font-heading)", fontSize: "1.1rem", fontWeight: 700, marginBottom: "0.5rem" }}>
+                Our Solution &amp; Technical Execution
+              </h4>
+              <p style={{ color: "var(--text-secondary)", fontSize: "0.96rem", lineHeight: 1.65 }}>
+                {selectedCase.solution}
+              </p>
+            </div>
+
+            <div className="impact-result-strip" style={{ marginBottom: "2rem" }}>
+              <div className="result-strip-label">Verified Client Result</div>
+              <div className="result-strip-value">{selectedCase.impactMetric}</div>
+            </div>
+
+            <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+              <a
+                href={selectedCase.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary"
+              >
+                <span>Visit Live Platform</span>
+                <span className="btn-arrow">↗</span>
+              </a>
+              <button
+                className="btn-secondary"
+                onClick={() => setSelectedCase(null)}
+              >
+                Close Case Study
+              </button>
+            </div>
           </div>
         </div>
-
-        <button
-          className="music-toggle-btn"
-          onClick={() => setMusicOpen(!musicOpen)}
-          aria-label="Toggle background music"
-        >
-          {playing ? "🎵" : "🎶"}
-        </button>
-      </div>
+      )}
     </>
   );
 }
